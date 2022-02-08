@@ -2,6 +2,13 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap');
 
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body{
   font-family: 'Poppins', sans-serif;
 }
@@ -24,6 +31,11 @@ body{
   border-radius: 20px;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.479);
   backface-visibility: hidden;
+
+  /*backface~: hidden => faz com que os itens que estejam invertidos não sejam exibidos (seja no eixo X ou no eixo Y)
+  Exemplo:
+  https://www.w3schools.com/cssref/trycss3_backface_inuse.htm
+  */
 }
 
 .front_card{
@@ -42,4 +54,37 @@ body{
   letter-spacing: 5px;
   color: #020255;
   /* display: none; */
+}
+
+#gameOver{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.753);
+  color: #FFF;
+  font-size: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-weight: 700;
+  top: 0;
+}
+
+#restart{
+  padding: 20px;
+  font-size: 20px;
+  background-color: red;
+  border-radius: 10px;
+  font-weight: 700;
+  color: yellow;
+  border: none;
+  box-shadow: 1px 1px 1px black;
+  margin-top: 10px;
+  cursor: pointer;
+  transition-duration: 0.3s;
+}
+
+#restart:hover{
+  transform: scale(1.1)
 }
