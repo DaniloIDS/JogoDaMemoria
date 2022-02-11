@@ -3,82 +3,17 @@ const FRONT = "front_card"
 const CARD = "card"
 const ICON = "icon"
 
-
-let techs = [
- "HTML",
- "CSS",
- "Javascript",
- "Firebase",
- "Node",
- "Boostrap",
- "Python",
- "React",
- "Electron",
- "Mongodb"
-]
-
-let cards = null
-
-function startGame(){
-  cards = createCardsDeck(techs)
-  shuffleCards(cards)
-  console.log(cards)
-
-  initializeCards(cards)
-}
-
 startGame();
 
-
-function createCardsDeck(tech){
-  let cards = [];
-
-  for(tech of techs){
-  cards.push(createPairCard(tech))
-  }
-  
-  return cards.flatMap(pair => pair)
+function startGame(){
+  initializeCards(game.createCardsDeck(game.techs))
 }
 
-
-function createPairCard(tech){
-  
-  return [
-    {
-      id: createRandomID(tech),
-      tech: tech,
-      flipped: false
-    },
-    {
-      id: createRandomID(tech),
-      tech: tech,
-      flipped: false
-    }
-  ]
-}
-
-function createRandomID(tech){
-  return tech + Number.parseInt(Math.random() * 1000)
-}
-
-function shuffleCards(cards){
-  let currentIndex = cards.length
-  let randomIndex = 0
-  
-  while(currentIndex !== 0){
-
-    randomIndex = Math.floor(Math.random() * currentIndex)
-    currentIndex--;    
-
-    [cards[randomIndex], cards[currentIndex]] = [cards[currentIndex], cards[randomIndex]]
-  }
-}
-
-function initializeCards(cards){
+function initializeCards(){
 
   let gameBoard = document.getElementById("gameBoard");
-
-  cards.forEach(card=>{
+  gameBoard.innerHTML = ''
+  game.cards.forEach(card=>{
 
     let cardElement = document.createElement('div')
     cardElement.id = card.id
@@ -94,7 +29,30 @@ function initializeCards(cards){
 }
 
 function flipCard(){
-  this.classList.add("flip")
+
+  if(game.setCard(this.id)){
+
+    this.classList.add("flip")
+    if(game.secondCard) {
+      if(game.checkMatch()){
+        game.clearCards()
+        if(game.checkGameOver()){
+          let gameOverLayer = document.getElementById('gameOver')
+          gameOverLayer.style.display = 'flex'
+        }
+      }else{
+
+        setTimeout(()=>{
+        let firstCardView = document.getElementById(game.firstCard.id);
+        let secondCardView = document.getElementById(game.secondCard.id)
+
+        firstCardView.classList.remove('flip')
+        secondCardView.classList.remove('flip')
+        game.unflipCards()
+        },1000)
+      }
+    }
+  }
 }
 
 function createCardContent(card, cardElement){
@@ -117,4 +75,12 @@ function createCardFace(face, card, element){
   }
 
   element.appendChild(cardElementFace)
+}
+
+function restart(){
+  game.clearCards();
+  startGame();
+  let gameOverLayer = document.getElementById('gameOver')
+  gameOverLayer.style.display = 'none'
+  
 }
